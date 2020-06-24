@@ -1,0 +1,43 @@
+import pandas as pd
+
+cols = ['brewery','keg_size','cost','cost/beer','beers/boy','cost/boy']
+data = {'brewery': [None],
+        'keg_size': [None],
+        'cost': [None],
+        'cost/beer': [None],
+        'beers/boy': [None],
+        'cost/boy': [None]}    
+
+df_kegs = pd.DataFrame(data= data, columns = cols) 
+df_kegs_temp = pd.DataFrame(data= data, columns = cols) 
+
+breweries = [['trolley5',50, 225],
+             ['trolley5', 20, 95],
+             ['bigRock',58,283.75],
+             ['bigRock',30,200],
+             ['wildrose',58.6,275],
+             ['wildrose',29.3,175],
+             ['brewsters',50,262.50],
+             ['brewsters',30,152.25],
+             ['Zyn-PBR',50,221],
+             ['Zyn-WR-Wraspberry',30,153],
+             ['Zyn-Village-Blonde',20,95],
+             ['Zyn-Coors-Banquet',59,315],
+             ['Zyn-LastBestIPA',30,158],
+             ['Zyn-SolarisWhitePeachAle',50,240],
+             ['Zyn-1664Blanc',30,205]
+            ]
+boyz = [8]
+df_kegs.drop(df_kegs.index, inplace=True)
+for brews in breweries:
+    bpk = (brews[1]/0.355) # beers per keg
+    bpb = (brews[1]/0.355)/boy #beers per boy
+    df_kegs_temp['brewery'] = brews[0]
+    df_kegs_temp['keg_size'] = brews[1]
+    df_kegs_temp['cost'] = brews[2]
+    df_kegs_temp['cost/beer'] = brews[2]/bpk
+    df_kegs_temp['beers/boy'] = bpb
+    df_kegs_temp['cost/boy'] = brews[2]/boy
+    df_kegs = df_kegs.append(df_kegs_temp)
+df_kegs.set_index('brewery')
+df_kegs.sort_values(by='cost/beer')
